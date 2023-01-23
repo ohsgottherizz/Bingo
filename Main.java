@@ -98,7 +98,7 @@ public class Main {
 			//vertical check for human bingo
 
 			for(i=0;i<5;i++) {
-				a=b=0;
+				checka=checkb=0;
 				for(j=0;j<5;j++) {
 					if(hum[i][j]==0) {
 						checka++;
@@ -136,7 +136,7 @@ public class Main {
 
 			if(nbingo>=3) {
 				System.out.println("You Win!\n");
-				system.out.println("Computer's Bingo Board: ");
+				System.out.println("Computer's Bingo Board: ");
 				
 				for(i=0;i<5;i++) {
 					for(j=0;j<5;j++) {
@@ -153,36 +153,103 @@ public class Main {
 
 			//computer picking it's number
 
-			for(i=0;i<5;i++) {
-				c=0;
-				for(j=0;j<5;j++) {
-					if(com[i][j]==0) {
-						c++;
+			int a, b, d, e, x, y, fa=0, fa1, fa2, ra;
+			int result;
+			int num[][]=new int[12][6];
+            int most[][]=new int[12][5], re[]=new int[25];
+			for(a=0; a<5; a++)
+			{
+				fa1=0;
+				fa2=0;
+				for(b=0; b<5; b++)
+				{
+					if(com[a][b]!=0)
+					{
+						num[fa][fa1]=com[a][b];
+						fa1++;
+					}
+					if(com[b][a]!=0)
+					{
+						num[fa+1][fa2]=com[b][a];
+						fa2++;
 					}
 				}
-				if(mcount<c) {
-					mcount=c;
-				}  
-				c=0;
-				for(j=0;j<5;j++) { 
-					if(com[j][i]==0) {  
-						c++;
-					}
-				}
-				if(mcount<c) {v 
-					mcount=c
-				}
-
+				num[fa][5]=fa1;
+				num[fa+1][5]=fa2;
+				fa+=2;
 			}
+			fa1=fa2=0;
+			for(a=0; a<5; a++)
+			{
+				if(com[a][a]!=0)
+				{
+					num[fa][fa1]=com[a][a];
+					fa1++;
+				}
+				if(com[a][4-a]!=0)
+				{
+					num[fa+1][fa2]=com[a][4-a];
+					fa2++;
+				}
+			}
+			num[fa][5]=fa1;
+			num[fa+1][5]=fa2;
+
+			x=5;
+			for(a=0; a<12; a++)
+			{
+				if(num[a][5]==0)
+					System.out.printf("\n");
+				else if(num[a][5]<x)
+					x=num[a][5];
+			}
+			y=0;
+			for(a=0; a<12; a++)
+			{
+				if(num[a][5]==x)
+				{
+					for(b=0; b<5; b++)
+						most[y][b]=num[a][b];
+					y++;
+				}
+			}
+			y=d=0;
+			for(a=1; a<26; a++)
+			{
+				n=0;
+				for(b=0; b<12; b++)
+				{
+					for(c=0; c<5; c++)
+					{
+						if(most[b][c]==a)
+							n++;
+					}
+				}
+				if(y==n)
+				{
+					re[d]=a;
+					d++;
+				}
+				else if(n>y)
+				{
+					y=n;
+					for(e=0; e<25; e++)
+						re[e]=0;
+					re[0]=a;
+					d=1;
+				}
+			}
+			ra=(int)(Math.random()*d);
+			result=re[ra];
 
 			//making n in both arrays 0
 
 			for(i=0;i<5;i++) {
 				for(j=0;j<5;j++) {
-					if(hum[i][j]==n) {
+					if(hum[i][j]==result) {
 						hum[i][j]=0;
 					}
-					if(com[i][j]==n) {
+					if(com[i][j]==result) {
 						com[i][j]=0;
 					}
 				}
@@ -231,7 +298,7 @@ public class Main {
 
 			if(nbingo>=3) {
 				System.out.println("You Lose!\n");
-				system.out.println("Computer's Bingo Board: ");
+				System.out.println("Computer's Bingo Board: ");
 				
 				for(i=0;i<5;i++) {
 					for(j=0;j<5;j++) {
